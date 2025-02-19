@@ -12,14 +12,10 @@ Pod::Spec.new do |s|
   s.osx.deployment_target = '10.10'
 
   s.prepare_command = <<-CMD
-    if [ -d .git ]; then
-      git submodule update --init --recursive
-      find . -name "*.c" -exec sed -i '' -e 's:ed25519-donna/::g' {} +
-      find . -name "*.h" -exec sed -i '' -e 's:ed25519-donna/::g' {} +
-      sed -i '' -e 's:USE_ETHEREUM 0:USE_ETHEREUM 1:g' trezor-crypto/options.h
-    else
-      echo "Not a git repository. Skipping submodule update."
-    fi
+    git submodule update --init --recursive
+    sed -i '' -e 's:ed25519-donna/::g' ./**/*.c
+    sed -i '' -e 's:ed25519-donna/::g' ./**/*.h
+    sed -i '' -e 's:USE_ETHEREUM 0:USE_ETHEREUM 1:g' trezor-crypto/options.h
   CMD
   s.module_map = 'TrezorCrypto.modulemap'
   search_paths = [
